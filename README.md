@@ -34,7 +34,6 @@ The playbook uses the following variables:
 
     home_directory: The home directory for the kube_user (typically /home/kube_user or /root).
     kube_user: The user that will own the kubeconfig and other related Kubernetes files.
-    ansible_env.SHELL: Ensures that the script is using /bin/bash for bash-specific commands.
 
 Example Variables
 
