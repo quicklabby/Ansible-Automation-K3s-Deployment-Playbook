@@ -79,6 +79,19 @@ To run the playbook, use the following command:
 This will execute the playbook and apply the necessary configurations to both master and worker nodes.
 Ensure that the ansible_user has SSH access to all nodes and the correct permissions to run commands as root (via sudo or similar).
 
+## Uninstall K3s from Master and Worker Nodes
+Master Node:
+
+    Ensure k3s-uninstall.sh script is present, then run it if available.
+    If not found, notify that the script is missing.
+    Remove KUBECONFIG export from ~/.bashrc.
+    Delete the ~/.kube directory.
+
+Worker Nodes:
+
+    Ensure k3s-agent-uninstall.sh script is present, then run it if available.
+    If not found, notify that the agent script is missing.
+
 ### Notes:
 
 The playbook assumes that the k3s installation script is fetched from the official URL (https://get.k3s.io).
