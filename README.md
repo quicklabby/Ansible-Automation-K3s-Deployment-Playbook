@@ -37,8 +37,8 @@ The playbook uses the following variables:
 
 Example Variables
 
-```home_directory: "/home/kube_user"
-kube_user: "kube_user"```
+    home_directory: "/home/kube_user"
+    kube_user: "kube_user"
 
 Playbook Breakdown
 1. Master Node Setup (hosts: master)
@@ -60,27 +60,24 @@ Playbook Breakdown
 
     Clear token variable: Once all worker nodes have been processed, the TOKEN variable is cleared to prevent security leaks or unintended access.
 
-Usage
-Inventory File Example
+## Usage
+
+Inventory File Example:
 
 An example Ansible inventory file (hosts.ini) could look like this:
 
-ini
+    [master]
+    master1 ansible_host=192.168.1.100 ansible_user=root
 
-[master]
-master1 ansible_host=192.168.1.100 ansible_user=root
-
-[workers]
-worker1 ansible_host=192.168.1.101 ansible_user=root
-worker2 ansible_host=192.168.1.102 ansible_user=root
+    [workers]
+    worker1 ansible_host=192.168.1.101 ansible_user=root
+    worker2 ansible_host=192.168.1.102 ansible_user=root
 
 Running the Playbook
 
 To run the playbook, use the following command:
 
-bash
-
-ansible-playbook -i hosts.ini k3s-cluster-setup.yml
+    ansible-playbook -i hosts.ini k3s-cluster-setup.yml
 
 This will execute the playbook and apply the necessary configurations to both master and worker nodes.
 Ansible Configuration Example
