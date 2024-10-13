@@ -68,11 +68,10 @@ Inventory File Example:
 An example Ansible inventory file (hosts.ini) could look like this:
 
     [master]
-    master1 ansible_host=192.168.1.100 ansible_user=root
+    192.168.x.xxx ansible_python_interpreter=/usr/bin/python3.12 ansible_become_pass=your_password ansible_user=your_username home_directory=/home/your_home_directory kube_user=your_username ansible_host=192.168.x.xxx
 
     [workers]
-    worker1 ansible_host=192.168.1.101 ansible_user=root
-    worker2 ansible_host=192.168.1.102 ansible_user=root
+    192.168.x.xxx ansible_python_interpreter=/usr/bin/python3.12 ansible_become_pass=your_password ansible_user=your_username 
 
 ### Running the Playbook
 
