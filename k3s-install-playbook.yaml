@@ -1,0 +1,110 @@
+#Command to run the upgrade ansible-playbook -i inventory.yaml -k k3s-install-playbook.yaml
+
+
+- hosts: master
+  become: yes
+  serial: 1  # Ensures only one master is processed at a time
+
+  tasks:
+    - name: Update and upgrade packages
+      package:
+        name: "*"
+        state: latest
+      when: ansible_os_family in ["Debian", "RedHat"]
+
+    - name: Check if k3s service is running
+      command: systemctl is-active k3s
+      register: service_status
+      ignore_errors: yes  
+
+    - name: Notify if the service is already running
+      ansible.builtin.debug:
+        msg: "k3s is running"
+      when: service_status.stdout == 'active'
+
+    - name: Kill k3s services
+      command: /usr/local/bin/k3s-killall.sh
+      when: service_status.stdout == 'active'
+
+    - name: Notify if the service is not running
+      ansible.builtin.debug:
+        msg: "k3s is not running"
+      when: service_status.stdout == 'inactive'
+
+    - name: Install/upgrade k3s and disable traefik, servicelb
+      shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik,servicelb" sh -s -
+      args:
+        executable: /bin/bash
+
+    - name: Create token variable for worker nodes installation
+      shell: |
+        TOKEN=$(cat /var/lib/rancher/k3s/server/node-token)
+        echo "$TOKEN"
+      register: token_output
+
+    - name: Set token as local variable
+      set_fact:
+        TOKEN: "{{ token_output.stdout }}"
+      delegate_to: localhost
+
+    - name: Create ~/.kube directory
+      file:
+        path: "{{ home_directory }}/.kube"
+        state: directory
+        mode: '0700'
+        owner: "{{ kube_user }}"
+
+    - name: Copy token into kube user directory
+      copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "{{ home_directory }}/.kube/config"
+        mode: '0600'
+        owner: "{{ kube_user }}"
+        remote_src: yes  
+
+    - name: Add export KUBECONFIG to ~/.bashrc
+      lineinfile:
+        path: "{{ home_directory }}/.bashrc"
+        line: 'export KUBECONFIG=~/.kube/config'
+        state: present
+      when: ansible_env.SHELL == '/bin/bash'
+
+    - name: Restart k3s service
+      systemd:
+        name: k3s
+        state: restarted
+
+
+- hosts: workers
+  become: yes
+  serial: 1  # Ensures only one worker node is processed at a time
+
+  tasks:
+    - name: Update and upgrade packages
+      package:
+        name: "*"
+        state: latest
+      when: ansible_os_family in ["Debian", "RedHat"]
+
+    - name: Kill k3s services if running
+      command: /usr/local/bin/k3s-killall.sh
+      ignore_errors: yes  
+
+    - name: Install/upgrade k3s on worker nodes
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars[groups['master'][0]].ansible_host }}:6443 K3S_TOKEN={{ hostvars[groups['master'][0]].TOKEN }} sh -
+      args:
+        executable: /bin/bash
+
+    - name: Restart k3s service
+      systemd:
+        name: k3s-agent
+        state: restarted
+      failed_when: false 
+
+- hosts: localhost
+  tasks:
+    - name: Clear token variable globally after all workers are processed
+      set_fact:
+        TOKEN: ""

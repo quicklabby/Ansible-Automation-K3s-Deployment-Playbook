@@ -1,0 +1,50 @@
+---
+- name: Uninstall K3s from all hosts
+  hosts: master
+  become: true
+  tasks:
+    - name: Ensure k3s-uninstall.sh script is present
+      stat:
+        path: /usr/local/bin/k3s-uninstall.sh
+      register: uninstall_script
+
+    - name: Run k3s uninstall script
+      command: /usr/local/bin/k3s-uninstall.sh
+      when: uninstall_script.stat.exists
+      ignore_errors: true  
+
+    - name: Inform if uninstall script was not found
+      debug:
+        msg: "The uninstall script /usr/local/bin/k3s-uninstall.sh does not exist on {{ inventory_hostname }}"
+      when: not uninstall_script.stat.exists
+
+    - name: Remove kube export from ~/.bashrc
+      lineinfile:
+        path: "{{ home_directory }}/.bashrc"
+        line: 'export KUBECONFIG=~/.kube/config'
+        state: absent
+      when: ansible_env.SHELL == '/bin/bash'
+
+    - name: Remove ~/.kube directory
+      file:
+        path: "{{ home_directory }}/.kube"
+        state: absent
+     
+- name: Uninstall K3s agent from worker nodes
+  hosts: workers  
+  become: true
+  tasks:
+    - name: Ensure k3s-agent-uninstall.sh script is present
+      stat:
+        path: /usr/local/bin/k3s-agent-uninstall.sh
+      register: agent_uninstall_script
+
+    - name: Run k3s agent uninstall script on worker nodes
+      command: /usr/local/bin/k3s-agent-uninstall.sh
+      when: agent_uninstall_script.stat.exists
+      ignore_errors: true
+
+    - name: Inform if agent uninstall script was not found
+      debug:
+        msg: "The uninstall script /usr/local/bin/k3s-agent-uninstall.sh does not exist on {{ inventory_hostname }}"
+      when: not agent_uninstall_script.stat.exists

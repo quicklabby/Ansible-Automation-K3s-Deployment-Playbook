@@ -1,0 +1,5 @@
+[master]
+192.168.3.78 ansible_python_interpreter=/usr/bin/python3.12 ansible_user=massimo ansible_become_pass=massimo home_directory=/home/massimo kube_user=massimo ansible_host=192.168.3.78
+
+[workers]
+192.168.3.89 ansible_python_interpreter=/usr/bin/python3.12 ansible_become_pass=massimo ansible_user=massimo 
