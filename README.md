@@ -60,7 +60,7 @@ Playbook Breakdown
 
     Clear token variable: Once all worker nodes have been processed, the TOKEN variable is cleared to prevent security leaks or unintended access.
 
-## Usage
+### Usage
 
 Inventory File Example:
 
@@ -73,18 +73,16 @@ An example Ansible inventory file (hosts.ini) could look like this:
     worker1 ansible_host=192.168.1.101 ansible_user=root
     worker2 ansible_host=192.168.1.102 ansible_user=root
 
-Running the Playbook
+### Running the Playbook
 
 To run the playbook, use the following command:
 
     ansible-playbook -i hosts.ini k3s-cluster-setup.yml
 
 This will execute the playbook and apply the necessary configurations to both master and worker nodes.
-Ansible Configuration Example
-
 Ensure that the ansible_user has SSH access to all nodes and the correct permissions to run commands as root (via sudo or similar).
-Notes:
 
-    The playbook assumes that the k3s installation script is fetched from the official URL (https://get.k3s.io).
-    The playbook also assumes that your nodes have internet access to fetch the required binaries and updates.
-    serial: 1 ensures that nodes are processed one by one, which is useful in a controlled environment like a Kubernetes cluster setup where the master needs to be prepared before the workers.
+### Notes:
+
+The playbook assumes that the k3s installation script is fetched from the official URL (https://get.k3s.io).
+The playbook also assumes that your nodes have internet access to fetch the required binaries and updates.
