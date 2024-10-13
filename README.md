@@ -20,14 +20,14 @@ Features:
         A token is dynamically created on the master node and passed to worker nodes for authentication and cluster joining.
         The token is cleared from the local Ansible variables once all worker nodes are processed.
 
-Requirements
+#Requirements
 
     Ansible (version 2.x or higher).
     At least one master node and multiple worker nodes.
     Access to each node (either via SSH or local execution).
     The k3s binary and associated scripts (k3s-killall.sh) should be available on the nodes, or they will be fetched from the official k3s installation script.
 
-Variables
+#Variables
 
 The playbook uses the following variables:
 
