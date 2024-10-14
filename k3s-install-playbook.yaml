@@ -3,7 +3,7 @@
 
 - hosts: master
   become: yes
-  serial: 1  # Ensures only one master is processed at a time
+  serial: 1  # Ensures only one master node is processed at a time
 
   tasks:
     - name: Update and upgrade packages
