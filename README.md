@@ -5,7 +5,7 @@ These two Ansible playbooks automate the installation and management of my k3s M
 Features:
 
 Master Node Setup:
-- Updates and upgrades packages (Debian and Red hat distro)
+- Updates and upgrades packages (tested on Debian and Red hat distro)
 - Verifies if the k3s service is running and handles the process if necessary
 - Installs or upgrades k3s while disable Traefik and ServiceLB
 - Creates and configures the kubeconfig file, ensuring it is accessible for the kube_user
