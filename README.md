@@ -1,4 +1,4 @@
-# K3s Deployment Install/Upgrade Playbook
+# K3s Deployment Install/Upgrade and Uninstall Playbook
 
 This two Ansible playbook automates the installation and management of my k3s Mini Cluster homelab. It is designed to handle both the master and worker nodes, ensuring the k3s services are installed, configured, and running correctly across all nodes in the cluster. It also includes procedures for handling the k3s service, upgrading the system packages, and ensuring the proper configuration of the Kubernetes client (kubeconfig) on the master node.
 
@@ -49,7 +49,11 @@ To run the playbook, use the following command:
 This will execute the playbook and apply the necessary configurations to both master and worker nodes.
 Ensure that the ansible_user has SSH access to all nodes and the correct permissions to run commands as root (via sudo or similar).
 
-# Uninstall K3s from Master and Worker Nodes Playbook
+## Uninstall K3s from Master and Worker Nodes Playbook
+
+To run the playbook, use the following command:
+
+    ansible-playbook -i inventory -k k3s-uninstall-playbook.yaml
 
 Master Node:
 
