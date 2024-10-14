@@ -5,23 +5,23 @@ These two Ansible playbooks automate the installation and management of my k3s M
 Features:
 
 Master Node Setup:
-    - Updates and upgrades packages (Debian and Red hat distro)
-    - Verifies if the k3s service is running and handles the process if necessary
-    - Installs or upgrades k3s while disable Traefik and ServiceLB
-    - Creates and configures the kubeconfig file, ensuring it is accessible for the kube_user
-    - Copy token from the master node and passes it to worker nodes for authentication and cluster joining.
-    - Restarts the k3s service after installation or upgrades
+- Updates and upgrades packages (Debian and Red hat distro)
+- Verifies if the k3s service is running and handles the process if necessary
+- Installs or upgrades k3s while disable Traefik and ServiceLB
+- Creates and configures the kubeconfig file, ensuring it is accessible for the kube_user
+- Copy token from the master node and passes it to worker nodes for authentication and cluster joining.
+- Restarts the k3s service after installation or upgrades
         
 Worker Node Setup:
-    - Updates and upgrades packages.
-    - Installs or upgrades k3s on worker nodes and joins them to the master node using the provided token.
-    - Restarts the k3s-agent service for proper operation.
+- Updates and upgrades packages.
+- Installs or upgrades k3s on worker nodes and joins them to the master node using the provided token.
+- Restarts the k3s-agent service for proper operation.
 
 ## Requirements
 
-   - Ansible (version 2.x or higher).
-   - At least one master node and multiple worker nodes.
-   - Access to each node (either via SSH or local execution).
+- Ansible (version 2.x or higher).
+- At least one master node and multiple worker nodes.
+- Access to each node (either via SSH or local execution).
 
 ## Variables
 
@@ -57,15 +57,15 @@ To uninstall master and all the worker nodes, use the following command:
 
 Master Node:
 
-   - Run k3s-uninstall.sh script
-   - If not found, notify that the script is missing.
-   - Remove KUBECONFIG export from ~/.bashrc.
-   - Delete the ~/.kube directory.
+- Run k3s-uninstall.sh script
+- If not found, notify that the script is missing.
+- Remove KUBECONFIG export from ~/.bashrc.
+- Delete the ~/.kube directory.
 
 Worker Nodes:
 
-   - Ensure k3s-agent-uninstall.sh script is present, then run it if available.
-   - If not found, notify that the agent script is missing.
+- Ensure k3s-agent-uninstall.sh script is present, then run it if available.
+- If not found, notify that the agent script is missing.
 
 ### Notes:
 
