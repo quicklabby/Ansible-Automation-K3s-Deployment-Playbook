@@ -51,13 +51,13 @@ Ensure that the ansible_user has SSH access to all nodes and the correct permiss
 
 ## Uninstall K3s from Master and Worker Nodes Playbook
 
-To run the playbook, use the following command:
+To uninstall master and all the worker nodes, use the following command:
 
     ansible-playbook -i inventory -k k3s-uninstall-playbook.yaml
 
 Master Node:
 
-   - Runk3s-uninstall.sh script
+   - Run k3s-uninstall.sh script
    - If not found, notify that the script is missing.
    - Remove KUBECONFIG export from ~/.bashrc.
    - Delete the ~/.kube directory.
