@@ -1,6 +1,6 @@
 # K3s Deployment Install/Upgrade and Uninstall Playbook
 
-This two Ansible playbook automates the installation and management of my k3s Mini Cluster homelab. It is designed to handle both the master and worker nodes, ensuring the k3s services are installed, configured, and running correctly across all nodes in the cluster. It also includes procedures for handling the k3s service, upgrading the system packages, and ensuring the proper configuration of the Kubernetes client (kubeconfig) on the master node.
+These two Ansible playbooks automate the installation and management of my k3s Mini Cluster homelab. They are designed to handle both the master and worker nodes, ensuring that the k3s services are installed, configured, and running correctly across all nodes in the cluster. They also upgrade the system packages for the preferred Linux distro and ensure the proper configuration of the Kubernetes client (kubeconfig) on the master node.
 
 Features:
 
